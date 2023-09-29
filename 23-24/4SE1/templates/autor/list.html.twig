@@ -1,0 +1,17 @@
+La longueur du tableau est:<b>{{auth|length}}</b><br>
+<table border="1">
+    <tr>
+        <th>Id</th><th>Picture</th><th>Username</th><th>email</th><th>nb_books</th>
+    </tr>
+    {% for a in auth %}
+    <tr>
+        <td>{{ a.id }} </td>
+        <td>{{ a.picture }} </td>
+        <td>{{ a.username |upper}} </td>
+        <td>{{ a.email }} </td>
+        <td>{{ a.nb_books }} </td>
+    </tr>
+    {%else%} Tableau Not Found!!
+    {% endfor %} 
+</table>
+

@@ -1,0 +1,32 @@
+ La longueur du tableau est  {{ auth|length }}
+ 
+<table border="1">
+  <tr>
+    <th>Id</th>
+    <th>Picture</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>nb_books</th>
+    <th>Details</th>
+     
+  </tr>
+  {% for a in auth %}
+    <tr>
+      <td>{{a.id}}</td>
+      <td><img src='{{a.picture}}' width=50></td>
+      <td>{{a.username |upper}}</td>
+      <td>{{a.email}}</td>
+      <td>{{a.nb_books}}</td>
+      <td> <a href="{{path('dd',{'id':a.id})}}">Details</a></td>
+    </tr>
+    {% else %}
+    <i>Tableau NOT FOUND</i>
+
+  {%endfor%}
+</table>
+{####Q7#####}
+{% set somme=0%}
+{% for aa in auth%}
+{% set somme=somme+aa.nb_books%}
+{% endfor %}
+Le nbe total des books est: <b>{{somme}}</b>

@@ -3,15 +3,22 @@ La longueur du tableau est:<b>{{auth|length}}</b><br>
     <tr>
         <th>Id</th><th>Picture</th><th>Username</th><th>email</th><th>nb_books</th>
     </tr>
-    {% for a in auth %}
+    {% for a in auth|reverse %}
     <tr>
         <td>{{ a.id }} </td>
         <td>{{ a.picture }} </td>
         <td>{{ a.username |upper}} </td>
         <td>{{ a.email }} </td>
         <td>{{ a.nb_books }} </td>
+        <td><a href="{{path('DD',{'i':a.id})}}">Details</a></td>
     </tr>
     {%else%} Tableau Not Found!!
     {% endfor %} 
 </table>
+{#Q7#}
+{% set somme=0%}
+{% for aa in auth%}
+{% set somme=somme+aa.nb_books%}
+{%endfor%}
+<p>La somme est : {{somme}}</p>
 

@@ -1,0 +1,9 @@
+{%for a in aa|filter(aa=>ii==aa.id)%}
+{#{%if a.id == ii %}#}
+<ul>
+    <li>l'id est: {{ii}}</li>
+    <li> Le username est: {{a.username}}</li>
+    <li>l'image est : <img src="{{asset(a.picture)}}"></li>
+</ul>
+{#{%endif%}#}
+{%endfor%}

@@ -8,6 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/autor')]
 class AutorController extends AbstractController
 {
+    public $authors = array(
+        array('id' => 1, 'picture' => '/images/ESPRIT.jpg',
+        'username' => 'Victor Hugo', 'email' =>'victor.hugo@gmail.com ', 'nb_books' => 100),
+        array('id' => 2, 'picture' => '/images/ESPRIT.jpg',
+        'username' => ' William Shakespeare', 'email' =>' william.shakespeare@gmail.com', 'nb_books' => 200 ),
+        array('id' => 3, 'picture' => '/images/ESPRIT.jpg',
+        'username' => 'Taha Hussein', 'email' =>'taha.hussein@gmail.com', 'nb_books' => 300),
+        );
     #[Route('/index', name: 'app_autor')]
     public function index(): Response
     {
@@ -31,5 +39,11 @@ class AutorController extends AbstractController
             );
             return $this->render('autor/list.html.twig',
         ['auth'=>$authors]);
+    }
+    #[Route('/Details/{i}', name:'DD')]
+    function AuthorDetails($i){
+       
+        return $this->render('autor/details.html.twig',
+        ['ii'=>$i,'aa'=>$this->authors]);
     }
 }

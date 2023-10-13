@@ -1,0 +1,27 @@
+
+<table border="1">
+    <tr>
+        <th>Id</th><th>Username</th><th>email</th>
+        <th>Detail</th><th>Delete</th><th>Delete</th>
+    </tr>
+    {% for a in aa %}
+    <tr>
+        <td>{{ a.id }} </td>
+       
+        <td>{{ a.username |upper}} </td>
+        <td>{{ a.email }} </td>
+        <td><a href="{{path('Detail',{'id':a.id})}}">Detail</a></td>
+        <td><a href="{{path('Delete',{'id':a.id})}}">Delete</a></td>
+        <td>
+            <form action="{{path('Delete',{'id':a.id})}}">
+                {#<button>Delete</button>#}
+                <input type="submit" value="Delete" >
+            </form>
+        </td>
+
+ 
+       
+    </tr>
+    {%else%} Tableau Not Found!!
+    {% endfor %} 
+</table>

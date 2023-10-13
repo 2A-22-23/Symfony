@@ -1,0 +1,19 @@
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>email</th>
+        <th>Details</th>
+        <th>Delete</th>
+        
+    </tr>
+    {% for a in aa %}
+    <tr>
+        <td>{{a.id}}</td>
+        <td>{{a.username}}</td>
+        <td>{{a.email}}</td>
+        <td><a href="{{path('AuthorDetail',{'ii':a.id})}}">Details</a></td>
+        <td><a href="{{path('Delete_Author',{'id':a.id})}}">Delete</a></td>
+    </tr>
+    {%endfor%}
+</table>

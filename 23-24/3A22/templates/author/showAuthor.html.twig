@@ -1,0 +1,9 @@
+{% for auth in authors| filter(authors=>authors.id== id) %}
+{#{%if auth.id== id %}#}
+    <ul>
+        <li>L'id de l'auteur est {{auth.id}}</li>
+        <li>Le username est {{auth.username}}</li>
+        <li>l'image est <img src='{{auth.picture}}'></li>
+    </ul>
+{#{%endif%}#}
+{% endfor%}

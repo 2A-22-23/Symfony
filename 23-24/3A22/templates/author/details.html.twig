@@ -1,9 +1,0 @@
-{%for auth in a|filter(a=>a.id==i) %}
-   {# {% if auth.id== i%} #}
-    <ul>
-        <li>{{auth.id}}</li>
-        <li>{{auth.username}}</li>
-        <li><img src="{{asset(auth.picture)}}"></li>
-    </ul>
-   {# {%endif%}#}
-{% endfor %}

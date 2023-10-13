@@ -5,7 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Repository\AuthorRepository;
+use Doctrine\Persistence\ManagerRegistry;
 class AuthorController extends AbstractController
 {
     private $authors = array(
@@ -48,5 +49,30 @@ class AuthorController extends AbstractController
         return $this->render('author/details.html.twig',
         ['i'=>$id,'a'=>$this->authors]);
 
+    }
+    #[Route('/AfficheAuthor',name:'Aff')]
+    function AfficheAuthor(AuthorRepository $repo){
+        $auth=$repo->findAll();
+        return $this->render('author/Affiche.html.twig',
+        ['aa'=>$auth]);
+
+    }
+    #[Route('/DetailAuthor/{ii}',name:'Detail_Author')]
+    function DetailAuthor(AuthorRepository $repo,$ii){
+            $auth=$repo->find($ii);
+            return $this->render(
+            'author/Detail_Author.html.twig',
+            ['aa'=>$auth]);
+    }
+    #[Route('/DeleteAuthor/{id}',name:'Delete')]
+    function DeleteAuthor(ManagerRegistry $manager,AuthorRepository $repo,$id){
+        #récuperer l'id de l'obj à supprimler
+        $auth=$repo->find($id);
+        #Supp
+        $em=$manager->getManager();
+        $em->remove($auth);
+        $em->flush();
+        #Retourner l'affiche via name route
+        return $this->redirectToRoute('Aff');
     }
 }

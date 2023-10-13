@@ -5,6 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\AuthorRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Author;
 #[Route('/autor')]
 class AutorController extends AbstractController
 {
@@ -45,5 +48,38 @@ class AutorController extends AbstractController
        
         return $this->render('autor/details.html.twig',
         ['ii'=>$i,'aa'=>$this->authors]);
+    }
+    #[Route('/Affiche',name:"Aff")]
+    function Affiche(AuthorRepository $repo){
+        $authors=$repo->findAll();
+        return $this->render('autor/listAuthor.html.twig',
+        ['aa'=>$authors]);
+    }
+    #[Route('/DetailAuthor/{id}',name:"Detail")]
+    function DetailAuthor($id,AuthorRepository $repo){
+        $author=$repo->find($id);
+        return $this->render('autor/DetailAuthor.html.twig',
+        ['auteur'=>$author]);
+    }
+    #[Route('DeleteAuthor/{id}',name:'Delete')]
+    function DeleteAuthor($id,ManagerRegistry $manager,AuthorRepository $repo){
+        $em=$manager->getManager();
+        $objAuteur=$repo->find($id);
+        $em->remove($objAuteur);
+        $em->flush();
+        
+        return $this->redirectToRoute('Aff');
+    }
+    #[Route('/Ajout')]
+    function AjouterAuthor(ManagerRegistry $manager){
+        $em=$manager->getManager();//$em = entity Manager
+        $author= new Author;
+        $author->setUsername('ahmed');
+        $author->setEmail('a@esprit.tn');
+        $em->persist($author);
+        $em->flush();
+        // return $this->redirectToRoute('Aff');
+        return new Response("L'objet est ajouté");
+
     }
 }

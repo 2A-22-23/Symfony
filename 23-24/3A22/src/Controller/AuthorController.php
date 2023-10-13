@@ -5,7 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Repository\AuthorRepository;
+use Doctrine\Persistence\ManagerRegistry;
 class AuthorController extends AbstractController
 {
     private $authors = array(
@@ -43,10 +44,38 @@ class AuthorController extends AbstractController
         return $this->render('author/list.html.twig',
             ['auth' => $authors]);
     }
-    #[Route('/details/{id}',name:'dd')]
-    function authorDetails($id){
-        return $this->render('author/details.html.twig',
-        ['i'=>$id,'a'=>$this->authors]);
+    #[Route('/showAuthor/{i}', name: 'show')]
+    public function showAuthor($i)
+    {
+        return $this->render('author/showAuthor.html.twig',
+            ['id' => $i,
+             'authors'=>$this->authors]);
 
+    }
+    #[Route('/listAuthor', name:'list_Author')]
+    function listAuthor(AuthorRepository $repo){
+        $authors=$repo->findAll();
+        // var_dump($authors);
+        return $this->render('author/listAuthor.html.twig',
+        ['aa'=>$authors]);
+    }
+    #[Route('/DetailAuthor/{ii}',name:'AuthorDetail')]
+    function DetailAuthor($ii, AuthorRepository $repo){
+        $auth=$repo->find($ii);
+        // var_dump($auth);
+        return $this->render('author/DetailAuthor.html.twig',
+        ['aa'=>$auth]);
+    }
+    #[Route('/DeleteAuthor/{id}',name:'Delete_Author')]
+    function DeleteAuthor(ManagerRegistry $manager,AuthorRepository $repo,$id){
+        $em=$manager->getManager();
+        #findID from repo
+        $auth=$repo->find($id);
+        #EntityManger
+        #$em->remove(obj) via ID
+        $em->remove($auth);
+        #$em->flush()
+        $em->flush();
+        return $this->redirectToRoute('list_Author');
     }
 }

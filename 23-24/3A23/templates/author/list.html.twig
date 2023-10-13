@@ -1,0 +1,30 @@
+<img src="{{asset('/images/ESPRIT.jpg')}}" height=50>
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Picture</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Nb_Books</th>
+        <th>Détails</th>
+    </tr>
+    {%for a in auth|reverse%}
+    {#Comments#}
+    <tr>
+        <td>{{a.id}}</td>
+        <td><img src="{{a.picture}}" height=50></td>
+        <td>{{a.username|upper}}</td>
+        <td>{{a.email}}</td>
+        <td>{{a.nb_books}}</td>
+        <td><a href="{{path('dd',{'ii':a.id})}}">Details</a></td>
+    </tr>
+    {%else%} Tableau NOT Found!!!
+    {%endfor%}
+</table>
+Le nombre d'auteur est : {{auth|length}}
+{#Q7#}
+{% set somme=0 %}
+{% for aa in auth%}
+    {% set somme=somme+aa.nb_books %}
+{%endfor%}
+<p>Le nbe total des livres est: <b>{{somme}}</b></p>

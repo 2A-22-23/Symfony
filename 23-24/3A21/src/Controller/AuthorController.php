@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AuthorRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Author;
+use App\Form\AuthorType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class AuthorController extends AbstractController
 {
     private $authors = array(
@@ -74,5 +78,50 @@ class AuthorController extends AbstractController
         $em->flush();
         #Retourner l'affiche via name route
         return $this->redirectToRoute('Aff');
+    }#[Route('/AjoutAuthor')]
+    function AjoutAuthor(ManagerRegistry $manager){
+        #objectInstance
+        $author=new Author();
+        $author->setUsername('Ahmed');
+        $author->setEmail('a.h@esprit.tn');
+        $em=$manager->getManager();
+        $em->persist($author);
+        $em->flush();
+        #Resultat
+        #1
+        
+        return $this->redirectToRoute('Aff');
+        #2
+        // return new Response('<i>Add success!');
+    }
+    #[Route('/Ajout')]
+    function Ajout(ManagerRegistry $manager,Request $request){
+        $author=new Author();
+        $form=$this->createForm(AuthorType::class,$author)
+        ->add('Ajout',SubmitType::class);
+        $form->handleRequest($request);
+        if ( $form->isSubmitted() && $form->isValid() ) { 
+            $em=$manager->getManager();
+            $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute('Aff');
+        }
+        return $this->renderForm('author/AjoutAuthor.html.twig',['ff'=>$form]);
+            
+    }
+    #[Route('/Update/{id}',name:'U')]
+    function Update($id,ManagerRegistry $manager,Request $request,AuthorRepository $repo){
+        $author=$repo->find(($id));
+        $form=$this->createForm(AuthorType::class,$author)
+        ->add('Update',SubmitType::class);
+        $form->handleRequest($request);
+        if ( $form->isSubmitted() && $form->isValid() ) { 
+            $em=$manager->getManager();
+            // $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute('Aff');
+        }
+        return $this->renderForm('author/AjoutAuthor.html.twig',['ff'=>$form]);
+            
     }
 }

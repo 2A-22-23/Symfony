@@ -7,6 +7,8 @@
         <td>{{a.email}}</td>
         <td><a href="{{path('Detail_Author',{'ii':a.id})}}">Details</a>
         <td><a href="{{path('Delete',{'id':a.id})}}">Delete</a>
+        <td><a href="{{path('U',{'id':a.id})}}">Update</a>
+
 
         </tr>
     {%endfor%}

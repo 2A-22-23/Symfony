@@ -1,0 +1,17 @@
+<table>
+    <tr>
+        <th>Ref</th><th>Title</th>
+        <th>Category</th><th>Publication Date</th>
+        <th>Published</th><th>Auteur</th>
+    </tr>
+    {%for b in bb%}
+    <tr>
+        <td>{{b.ref}}</td>
+        <td>{{b.title}}</td>
+       <td>{{b.category}}</td>
+        <td>{{b.publicationDate|date}}</td>
+       <td>{{b.published}}</td>
+        <td>{{b.author.username}}</td>
+    </tr>
+    {%endfor%}
+</table>

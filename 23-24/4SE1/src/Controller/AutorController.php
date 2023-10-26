@@ -7,7 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AuthorRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Author;
+use App\Form\AuthorType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 #[Route('/autor')]
 class AutorController extends AbstractController
 {
@@ -81,5 +85,28 @@ class AutorController extends AbstractController
         // return $this->redirectToRoute('Aff');
         return new Response("L'objet est ajouté");
 
+    }
+    #[Route('/Add')]
+    function AddAuthor(Request $request,ManagerRegistry $manager){
+       $author= new Author;
+        #Formulaire
+        $form=$this->createForm(AuthorType::class,$author)
+        ->add('Ajouter',SubmitType::class);
+        $form->handleRequest($request);
+       if($form->isSubmitted() && $form->isValid()){
+            $em=$manager->getManager();//$em = entity Manager
+            $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute('Aff');
+       }
+        #Afficher formulaire sous forme de twig
+       return $this->renderForm(
+        'autor/Ajout.html.twig',['ff'=>$form]);
+    }
+    #[Route('/AfficheQB',name:"Aff")]
+    function AfficheQB(AuthorRepository $repo){
+        $authors=$repo->OrderByEmail();
+        return $this->render('autor/listAuthor.html.twig',
+        ['aa'=>$authors]);
     }
 }

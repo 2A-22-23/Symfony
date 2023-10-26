@@ -16,7 +16,7 @@
         <td>{{a.username|upper}}</td>
         <td>{{a.email}}</td>
         <td>{{a.nb_books}}</td>
-        <td><a href="{{path('dd',{'ii':a.id})}}">Details</a></td>
+        <td><a href="{{path('author_details',{ii:a.id})}}">Details</a></td>
     </tr>
     {%else%} Tableau NOT Found!!!
     {%endfor%}

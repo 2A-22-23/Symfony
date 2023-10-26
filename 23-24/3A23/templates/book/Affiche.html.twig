@@ -1,0 +1,18 @@
+<h1>Liste des livres</h1>
+<table border="1">
+    <tr>
+        <th>Ref</th><th>Title</th><th>Category</th><th>Published</th>
+        <th>Publication Date</th><th>Author</th>
+    </tr>
+    {%for b in bb%}
+        <tr>
+            <td>{{b.ref}}</td>
+            <td>{{b.title}}</td>
+            <td>{{b.category}}</td>
+            <td>{{b.published}}</td>
+            <td>{{b.publicationDate|date}}</td>
+            <td>{{b.author.username}}</td>
+        </tr>
+        {%else%} <p>No Book Found
+    {%endfor%}
+</table>

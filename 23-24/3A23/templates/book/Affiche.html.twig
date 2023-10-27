@@ -1,8 +1,13 @@
 <h1>Liste des livres</h1>
+<form action="{{path('Search')}}">
+    <label>Reference:</label>
+    <input type="text" name="r">
+    <input type="submit" value="Search">
+</form>
 <table border="1">
     <tr>
         <th>Ref</th><th>Title</th><th>Category</th><th>Published</th>
-        <th>Publication Date</th><th>Author</th>
+        <th>Publication Date</th><th>Author</th><th>Update</th><th>Delete</th>
     </tr>
     {%for b in bb%}
         <tr>
@@ -12,7 +17,18 @@
             <td>{{b.published}}</td>
             <td>{{b.publicationDate|date}}</td>
             <td>{{b.author.username}}</td>
+            <td><a href="{{path('Update',{id:b.ref})}}">Update</a></td>
+            <td><a href="{{path('Delete',{id:b.ref})}}">Delete</a></td>
         </tr>
         {%else%} <p>No Book Found
     {%endfor%}
 </table>
+{%set published=0%}{%set unpublished=0%}
+{% for b in bb%}
+    {% if b.published == true%}
+       {%set published=published+1%} 
+    {%else%}{%set unpublished=unpublished+1%}
+    {%endif%} 
+{%endfor%}
+<p>Number of published book: {{published}} </p>
+<p>Number of unpublished book: {{unpublished}} </p>

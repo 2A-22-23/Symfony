@@ -29,6 +29,7 @@ class BookController extends AbstractController
         $form->handleRequest($req);
         if($form->isSubmitted()){
             $em=$manager->getManager();
+            // $book->setPublished(True);
             $em->persist($book);
             $em->flush();
             return new Response('Ajout avec succés!!');
@@ -36,11 +37,49 @@ class BookController extends AbstractController
         return $this->renderForm('book/Ajout.html.twig',
                 ['ff'=>$form]);
     }
-    #[Route('/AfficheBook')]
+    #[Route('/AfficheBook',name:"Aff")]
     function AfficheBook(BookRepository $repo){
         $books=$repo->findAll();
         return $this->render('book/Affiche.html.twig',
         ['bb'=>$books]);
 
+    }
+    #[Route('/UpdateBook/{id}',name:'Update')]
+    function UpdateBook($id,Request $req, ManagerRegistry $manager,BookRepository $repo){
+        // $book=new Book;
+        $book=$repo->find($id);
+        $form=$this->createForm(BookType::class,$book)
+        ->add('Update',SubmitType::class);
+        $form->handleRequest($req);
+        if($form->isSubmitted()){
+            $em=$manager->getManager();
+            $em->flush();
+            return $this->redirectToRoute("Aff");
+        }
+        return $this->renderForm('book/Ajout.html.twig',
+                ['ff'=>$form]);
+    }
+    #[Route("/Delete/{id}", name:"Delete")]
+    function Delete($id,ManagerRegistry $manager,BookRepository $repo){
+        $book=$repo->find($id);
+        $em=$manager->getManager();
+        $em->remove($book);
+        $em->flush();
+        return $this->redirectToRoute("Aff");
+    }
+    #[Route('/search',name:'Search')]
+    function SearchBook(Request $request,BookRepository $repo){
+        // $ref=$_POST['r']
+        $ref=$request->get('r');
+        $books=$repo->SearchByRef($ref);
+        return $this->render('book/Affiche.html.twig',
+        ['bb'=>$books]);
+    }
+    #[Route('/findBook')]
+    function findBook(Request $request,BookRepository $repo){
+        // $books=$repo->findBook();
+        $books=$repo->findByDate();
+        return $this->render('book/Affiche.html.twig',
+        ['bb'=>$books]);
     }
 }
